@@ -2,9 +2,20 @@ import * as React from 'react'
 import { Grid,
     GridColumn as Column,
     GridDataStateChangeEvent,
-    GridCellProps,} from "@progress/kendo-react-grid";
+    GridRowProps,
+    } from "@progress/kendo-react-grid";
     import { process, State } from "@progress/kendo-data-query";
 import {users} from './user'
+const rowRender = (trElement:React.ReactElement<HTMLTableRowElement>,props:GridRowProps)=>{
+const enabled  = props.dataItem.enabled
+const red = { backgroundColor: "#FF0000"}
+const trProps:any = {style:enabled==="No"?red:{}} //?????
+return React.cloneElement(
+    trElement,
+    { ...trProps },
+    trElement.props.children
+  );
+}
 const initialDataState: State = {
     sort: [{ field: "code", dir: "asc" }],
   };
@@ -17,6 +28,7 @@ export const UserList = ()=>{
                 style={{
                     height: "400px",
                 }}
+                rowRender={rowRender}
                 data={process(users,dataState)}
                 sortable={true}
                 {...dataState}
