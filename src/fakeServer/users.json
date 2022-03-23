@@ -1,11 +1,11 @@
 {
     "users":
     [
-    {"UserName": "scar1etw1tch", "firstName": "Wanda","lastName":"Maximof","LastLogin":"2014-01-01T23:28:56.782Z","enabled":"Yes"},
-    {"UserName": "6lackw1d0w", "firstName": "Natasha","lastName":"Romanof","LastLogin":"2015-02-01T23:28:56.782Z","enabled":"No"},
-    {"UserName": "Hawkay3", "firstName": "Clint","lastName":"Barton","LastLogin":"2016-03-01T23:28:56.782Z","enabled":"Yes"},
-    {"UserName": "Dr.Strang3", "firstName": "Steven","lastName":"Strange","LastLogin":"2017-04-01T23:28:56.782Z","enabled":"Yes"},
-    {"UserName": "sp1d3rman", "firstName": "Peter","lastName":"Parker","LastLogin":"2018-05-01T23:28:56.782Z","enabled":"No"}
+    {"UserName": "scar1etw1tch", "firstName": "Wanda","lastName":"Maximof","LastLogin":"2014-01-01T23:28:56.782Z","enabled":true},
+    {"UserName": "6lackw1d0w", "firstName": "Natasha","lastName":"Romanof","LastLogin":"2015-02-01T23:28:56.782Z","enabled":false},
+    {"UserName": "Hawkay3", "firstName": "Clint","lastName":"Barton","LastLogin":"2016-03-01T23:28:56.782Z","enabled":true},
+    {"UserName": "Dr.Strang3", "firstName": "Steven","lastName":"Strange","LastLogin":"2017-04-01T23:28:56.782Z","enabled":true},
+    {"UserName": "sp1d3rman", "firstName": "Peter","lastName":"Parker","LastLogin":"2018-05-01T23:28:56.782Z","enabled":false}
 
 ]
 }

@@ -7,11 +7,25 @@ import { Grid,
     GridRowProps,
     } from "@progress/kendo-react-grid";
     import { process, State } from "@progress/kendo-data-query";
-// import {users} from './user'
+
+const FullNameCell = (props:any)=>(
+    <td>
+        {
+            `${props.dataItem[props.field]} ${props.dataItem['lastName']}`
+        }
+    </td>
+)
+const EnabledCell = (props:any)=>(
+    <td>
+        {
+            props.dataItem[props.field]?"Yes":"No"
+            }
+    </td>
+)
 const rowRender = (trElement:React.ReactElement<HTMLTableRowElement>,props:GridRowProps)=>{
 const enabled  = props.dataItem.enabled
 const red = { backgroundColor: "#FF0000"}
-const trProps:any = {style:enabled==="No"?red:{}} //?????
+const trProps:any = {style:enabled===false?red:{}} //?????
 return React.cloneElement(
     trElement,
     { ...trProps },
@@ -50,10 +64,9 @@ export const UserList = observer(
                     
         >
         <Column field="UserName" title="User Name" width="250px" />   
-        <Column field="firstName" title="First Name" width="250px" />
-        <Column field="lastName" title="Last Name" />
+        <Column field="firstName" title="Full Name" width="250px" cell={FullNameCell}/>
         <Column field="LastLogin" title="last login" editor="date" format="{0:d}" />
-        <Column field="enabled" title="Enabled" />
+        <Column field="enabled" title="Enabled" cell = {EnabledCell}/>
         </Grid>
             </div>
         )
