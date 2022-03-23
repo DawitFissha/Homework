@@ -5,7 +5,7 @@ import {LoadUsers} from '../fakeServer/server'
     firstName:string
     lastName:string
     LastLogin:Date|string
-    enabled:"Yes"|"No"
+    enabled:boolean
 }
 export interface UserState{
     users:USER[]
