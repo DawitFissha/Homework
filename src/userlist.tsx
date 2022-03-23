@@ -3,11 +3,15 @@ import { observer } from 'mobx-react';
 import {MyUser} from './Store/userstate'
 import { Grid,
     GridColumn as Column,
+    GridFilterChangeEvent,
     GridDataStateChangeEvent,
     GridRowProps,
     } from "@progress/kendo-react-grid";
-    import { process, State } from "@progress/kendo-data-query";
-
+    import { process, State,filterBy,CompositeFilterDescriptor,} from "@progress/kendo-data-query";
+    const initialFilter: CompositeFilterDescriptor = {
+        logic: "and",
+        filters: [{ field: "ProductName", operator: "contains", value: "" }],
+      };
 const FullNameCell = (props:any)=>(
     <td>
         {
@@ -38,13 +42,12 @@ const initialDataState: State = {
 export const UserList = observer(
     ({user}:{user:MyUser})=>{
         React.useEffect(()=>{
-            // LoadUsers()
             user.getUsersFromServer()
-            // user.ParseJsonDate()
-            
-          },[user])
+        },[user])
           console.log(user.userData.users)
         const [dataState,setDataState] = React.useState<State>(initialDataState)
+        const [filter, setFilter] = React.useState(initialFilter);
+
         return(
             <div>
                 <h2>User list</h2>
@@ -53,9 +56,12 @@ export const UserList = observer(
                         height: "400px",
                     }}
                     rowRender={rowRender}
-                    data={process(user.userData.users,dataState)}
+                    data={process(filterBy(user.userData.users,filter),dataState)}
                     sortable={true}
+                    filterable = {true}
                     {...dataState}
+                    filter={filter}
+                    onFilterChange={(e: GridFilterChangeEvent) => setFilter(e.filter)}
                     onDataStateChange = {
                         (e:GridDataStateChangeEvent)=>{
                             setDataState(e.dataState);
@@ -64,9 +70,9 @@ export const UserList = observer(
                     
         >
         <Column field="UserName" title="User Name" width="250px" />   
-        <Column field="firstName" title="Full Name" width="250px" cell={FullNameCell}/>
-        <Column field="LastLogin" title="last login" editor="date" format="{0:d}" />
-        <Column field="enabled" title="Enabled" cell = {EnabledCell}/>
+        <Column field="firstName" title="Full Name" width="250px" cell={FullNameCell} filterable={false}/>
+        <Column field="LastLogin" title="last login" editor="date" format="{0:d}" filterable={false} />
+        <Column field="enabled" title="Enabled" cell = {EnabledCell} filterable={false}/>
         </Grid>
             </div>
         )
