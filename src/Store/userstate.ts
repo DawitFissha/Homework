@@ -1,6 +1,7 @@
 import {makeAutoObservable,action} from 'mobx'
-import {LoadUsers} from '../fakeServer/server'
+import {LoadUsers,PostUser} from '../fakeServer/server'
  interface USER {
+    id:string
     UserName:string
     firstName:string
     lastName:string
@@ -18,9 +19,7 @@ export class MyUser {
     }
     constructor(){
         makeAutoObservable(this)
-        // this.user = LoadUsers().then(data=>(data as USER[]))
-
-    }
+}
     
     getUsersFromServer(){
         LoadUsers().then(
@@ -32,11 +31,15 @@ export class MyUser {
             })
           );
     }
-    ParseJsonDate(){
-        this.userData.users = this.userData.users.map((user)=>(
-            {...user,LastLogin:'haha'}
-        ))
-    }
-   
+    AlreadyExists(username:string){
+        return this.userData.users.filter(user=>user.UserName===username).length
+   }
+   addUsers(user:any){
+    PostUser(user).then(
+        action('added',(data:any)=>{
+            this.userData.users = [...this.userData.users,{...data,LastLogin:new Date(data.LastLogin)}]
+        })
+    );
+   }
 }
-// export const myUser = new User()
+
