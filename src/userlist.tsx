@@ -10,7 +10,7 @@ import { Grid,
     import { process, State,filterBy,CompositeFilterDescriptor,} from "@progress/kendo-data-query";
     const initialFilter: CompositeFilterDescriptor = {
         logic: "and",
-        filters: [{ field: "ProductName", operator: "contains", value: "" }],
+        filters: [{ field: "UserName", operator: "contains", value: "" }],
       };
 const FullNameCell = (props:any)=>(
     <td>
@@ -41,19 +41,16 @@ const initialDataState: State = {
   };
 export const UserList = observer(
     ({user}:{user:MyUser})=>{
-        React.useEffect(()=>{
-            user.getUsersFromServer()
-        },[user])
-          console.log(user.userData.users)
+
         const [dataState,setDataState] = React.useState<State>(initialDataState)
         const [filter, setFilter] = React.useState(initialFilter);
-
+        console.log(user.userData.users)
         return(
             <div>
-                <h2>User list</h2>
+                
                 <Grid
                     style={{
-                        height: "400px",
+                        height: "auto",
                     }}
                     rowRender={rowRender}
                     data={process(filterBy(user.userData.users,filter),dataState)}

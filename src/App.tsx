@@ -3,30 +3,21 @@ import '@progress/kendo-theme-default/dist/all.css';
 import './App.css';
 import {UserList} from './userlist'
 import {MyUser} from './Store/userstate'
-const User = ()=>{
-  
-  return (
-    <div className="App">
-      <UserList user = {new MyUser()}/>
-      
-        {/* <ul>
-          {
-            user.userData.users.map((user)=>(
-              <li>
-                {user.UserName}
-              </li>
-            ))
-          }
-        </ul> */}
-      
-    </div>
-  );
-}
+import {NewUserDialog} from './userdialog'
 function App() {
+  const user = new MyUser()
+  React.useEffect(()=>{
+    user.getUsersFromServer()
+},[user])
 return(
-  <>
-  <User/>
-  </>
+  
+ <> 
+ <h2 style = {{margin:'15px'}}>User list</h2>
+  <div>
+      <UserList user = {user}/>
+      <NewUserDialog user = {user}/>
+    </div>
+    </>
 )
   
 }
