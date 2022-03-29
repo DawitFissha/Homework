@@ -1,6 +1,6 @@
 import {makeAutoObservable,action} from 'mobx'
-import {LoadUsers,PostUser} from '../fakeServer/server'
- interface USER {
+import {LoadUsers,PostUser,UpdateUser} from '../fakeServer/server'
+ export interface USER {
     id:string
     UserName:string
     firstName:string
@@ -12,6 +12,7 @@ export interface UserState{
     users:USER[]
     state:'pending'|'done'|'error'
 }
+// local application state model 
 export class MyUser {
     userData:UserState = {
         users:[],
@@ -38,6 +39,13 @@ export class MyUser {
     PostUser(user).then(
         action('added',(data:any)=>{
             this.userData.users = [...this.userData.users,{...data,LastLogin:new Date(data.LastLogin)}]
+        })
+    );
+   }
+   editUser(user:any){
+    UpdateUser(user).then(
+        action('updated',()=>{
+        this.getUsersFromServer()
         })
     );
    }

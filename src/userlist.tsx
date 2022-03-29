@@ -1,11 +1,13 @@
 import * as React from 'react'
 import { observer } from 'mobx-react';
 import {MyUser} from './Store/userstate'
+import {useNavigate} from "react-router-dom";
 import { Grid,
     GridColumn as Column,
     GridFilterChangeEvent,
     GridDataStateChangeEvent,
     GridRowProps,
+    GridRowClickEvent,
     } from "@progress/kendo-react-grid";
     import { process, State,filterBy,CompositeFilterDescriptor,} from "@progress/kendo-data-query";
     const initialFilter: CompositeFilterDescriptor = {
@@ -29,7 +31,7 @@ const EnabledCell = (props:any)=>(
 const rowRender = (trElement:React.ReactElement<HTMLTableRowElement>,props:GridRowProps)=>{
 const enabled  = props.dataItem.enabled
 const red = { backgroundColor: "#FF0000"}
-const trProps:any = {style:enabled===false?red:{}} //?????
+const trProps:any = {style:enabled===false?red:{}} 
 return React.cloneElement(
     trElement,
     { ...trProps },
@@ -44,11 +46,13 @@ export const UserList = observer(
 
         const [dataState,setDataState] = React.useState<State>(initialDataState)
         const [filter, setFilter] = React.useState(initialFilter);
-        console.log(user.userData.users)
+        const navigate = useNavigate()
         return(
             <div>
-                
                 <Grid
+                onRowClick={(event: GridRowClickEvent)=>{
+                    navigate(`/userDetail/${event.dataItem.id}`)
+                }}
                     style={{
                         height: "auto",
                     }}
@@ -66,7 +70,7 @@ export const UserList = observer(
                     }
                     
         >
-        <Column field="UserName" title="User Name" width="250px" />   
+        <Column field="UserName" title="User Name" width="250px"  />   
         <Column field="firstName" title="Full Name" width="250px" cell={FullNameCell} filterable={false}/>
         <Column field="LastLogin" title="last login" editor="date" format="{0:d}" filterable={false} />
         <Column field="enabled" title="Enabled" cell = {EnabledCell} filterable={false}/>
