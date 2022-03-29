@@ -18,8 +18,6 @@ import {
     Dialog,
   } from "@progress/kendo-react-dialogs";
   
-const existingUsers = new MyUser()
-existingUsers.getUsersFromServer()
 const UserNameGetter:any = getter("UserName")
 const firstNameGetter:any = getter("firstName")
 const lastNameGetter:any = getter("lastName")
@@ -137,6 +135,9 @@ const UserForm = observer(
           <Form 
           validator = {formValidator}
           onSubmit = {handleSubmit}
+          initialValues = {{
+            enabled:false,
+          }}
           render={(formRenderProps:FormRenderProps)=>(
               <FormElement style={{minWidth:600}} >
   
@@ -162,6 +163,7 @@ const UserForm = observer(
                   name={"enabled"}
                   component={FormCheckbox}
                   label = {"Enabled"}
+                  value={formRenderProps.valueGetter("enabled")}
                   />
                   {formRenderProps.visited &&
                 formRenderProps.errors &&
@@ -170,7 +172,7 @@ const UserForm = observer(
                     {formRenderProps.errors.VALIDATION_SUMMARY}
                   </div>
                 )}
-              <Button style={{marginTop:'15px',marginLeft:'200px'}} disabled = {!formRenderProps.allowSubmit} type="submit"  themeColor={"primary"} icon="save">Submit</Button>
+              <Button style={{marginTop:'15px',marginLeft:'200px'}} disabled = {!formRenderProps.allowSubmit} type="submit"  themeColor={"primary"} icon="save">Save</Button>
               </FormElement>
               
           )}
