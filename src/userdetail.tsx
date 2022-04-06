@@ -76,39 +76,41 @@ export const  UserDetail = observer(
         const singleUser = user.userData.users.find(user=>user.id===params.userId)
         console.log(singleUser)
         const formValidator = (values:any)=>{
-            if(firstNameGetter(values)&&lastNameGetter(values)){
-                let result = {
-                    ["UserName"]:"",
-                    ["firstName"]:"",
-                    ["lastName"]:"",    
-                    VALIDATION_SUMMARY:""
-                }
-               if(firstNameGetter(values).length>25){
-                    
-                       result ["firstName"] = "first name can not excede 25 characters"
-                    
-                    
-                }
-                else if(lastNameGetter(values).length>25){
-                    
-                        result["lastName"] = "last name can not excede 25 characters"
-                    
-                    
-                }
-                else if((firstNameGetter(values).length+lastNameGetter(values).length)>40){
-                    
-                    result.VALIDATION_SUMMARY = "first name and last name together can't excede 40 characters"
-                    
-                }
-                return result
-            }
-            return {
-                ["firstName"]:
-                  "This field is required.",
-                ["lastName"]:
-                  "This field is required.",
-              };
-        }  
+          let result = {
+            firstName:"",
+            lastName:"",    
+            VALIDATION_SUMMARY:""
+        }
+        
+        if(firstNameGetter(values)){
+                if(firstNameGetter(values).length>25){
+                  
+                  result.firstName = "first name can not excede 25 characters"
+               }
+    
+              }
+              if(lastNameGetter(values)){
+                if(lastNameGetter(values).length>25){
+                  
+                  result.lastName= "last name can not excede 25 characters"
+              }
+              }
+              if(firstNameGetter(values)&&lastNameGetter(values)){
+                if((firstNameGetter(values).length+lastNameGetter(values).length)>40){
+                  
+                  result.VALIDATION_SUMMARY = "first name and last name together can't excede 40 characters"
+                  
+              }
+              }
+            
+              if(!firstNameGetter(values)){
+                result.firstName = "This field is required."
+              }
+              if(!lastNameGetter(values)){
+                result.lastName = "This field is required."
+              }
+          return result
+      }    
         const handleSubmit = (dataItem:{[name:string]:any}) => {
             // alert(JSON.stringify(dataItem, null, 2));  
             user.editUser({id:singleUser?.id,...dataItem,LastLogin:singleUser?.LastLogin})
