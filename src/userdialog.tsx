@@ -3,6 +3,7 @@ import { Button } from "@progress/kendo-react-buttons";
 import { getter } from "@progress/kendo-react-common";
 import {MyUser} from './Store/userstate'
 import { observer } from 'mobx-react';
+import {randomDate} from './Utils/randomDate'
 import {
     Form,
     Field,
@@ -79,57 +80,60 @@ const UserForm = observer(
   ({user,closeDialog}:{user:MyUser,closeDialog:()=>void})=> {
 
     const handleSubmit = (dataItem: { [name: string]: any }) => {
-      user.addUsers({...dataItem,LastLogin:new Date()})
+      user.addUsers({...dataItem,LastLogin:randomDate(new Date(2012, 0, 1), new Date())})
       closeDialog()
     }
     const formValidator = (values:any)=>{
-      if(UserNameGetter(values)&&firstNameGetter(values)&&lastNameGetter(values)){
-          let result = {
-              ["UserName"]:"",
-              ["firstName"]:"",
-              ["lastName"]:"",    
-              VALIDATION_SUMMARY:""
-          }
+      let result = {
+        UserName:"",
+        firstName:"",
+        lastName:"",    
+        VALIDATION_SUMMARY:""
+    }
+      if(UserNameGetter(values)){
+      
           if(!UserNameRegex.test(UserNameGetter(values))){
-              result['UserName'] = "only alphanumeric strings are allowed"
+              result.UserName = "only alphanumeric strings are allowed"
               }
           else if(user.AlreadyExists(UserNameGetter(values))>=1){
-            result['UserName'] = "UserName already Exists"
+            result.UserName = "UserName already Exists"
           }
           else if(UserNameGetter(values).length>15){
               
-                  result["UserName"]= "UserName can not excede 15 characters"
+                  result.UserName= "UserName can not excede 15 characters"
               }
-          else if(firstNameGetter(values).length>25){
+            }
+          if(firstNameGetter(values)){
+            if(firstNameGetter(values).length>25){
               
-                 result ["firstName"] = "first name can not excede 25 characters"
-              
-              
+              result.firstName = "first name can not excede 25 characters"
+           }
+
           }
-          else if(lastNameGetter(values).length>25){
+          if(lastNameGetter(values)){
+            if(lastNameGetter(values).length>25){
               
-                  result["lastName"] = "last name can not excede 25 characters"
-              
-              
+              result.lastName= "last name can not excede 25 characters"
           }
-          else if((firstNameGetter(values).length+lastNameGetter(values).length)>40){
+          }
+          if(firstNameGetter(values)&&lastNameGetter(values)){
+            if((firstNameGetter(values).length+lastNameGetter(values).length)>40){
               
               result.VALIDATION_SUMMARY = "first name and last name together can't excede 40 characters"
               
           }
-          return result
-      }
-      return {
-          
-          ["UserName"]:
-          "This field is required.",
-          ["firstName"]:
-            "This field is required.",
-          ["lastName"]:
-            "This field is required.",
-        };
-  }   
- 
+          }
+          if(!UserNameGetter(values)){
+            result.UserName = "This field is required."
+          }
+          if(!firstNameGetter(values)){
+            result.firstName = "This field is required."
+          }
+          if(!lastNameGetter(values)){
+            result.lastName = "This field is required."
+          }
+      return result
+  }  
   
       return(
           <Form 
@@ -196,7 +200,7 @@ export const NewUserDialog = ({user}:{user:MyUser})=>{
         }
         {
           visibleDialog&&(
-            <Dialog style = {{minWidth:'500px'}} title = {"add new user"} onClose = {toggleDialog}>
+            <Dialog style = {{minWidth:'500px'}} title = {"Add new user"} onClose = {toggleDialog}>
                 <UserForm closeDialog = {toggleDialog} user={user}/>
             </Dialog>
           )
